@@ -1,4 +1,4 @@
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, getFirestore } from "firebase/firestore";
 import app from "./firebase";
 
 const firestore = getFirestore(app);
@@ -10,5 +10,11 @@ export async function retriveData(collectionName: string) {
         ...doc.data()
     }))
     
+    return data;
+}
+
+export async function retriveDataById(collectionName: string, id: string) {
+    const snapshot = await getDoc(doc(firestore, collectionName, id))
+    const data = snapshot.data();
     return data;
 }
