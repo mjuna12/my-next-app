@@ -12,7 +12,7 @@ const authOptions: NextAuthOptions = {
         type: 'credentials',
         name: 'Credentials',
         credentials: {
-            emai:{label:"Email", type:"email"},
+            email:{label:"Email", type:"email"},
             fullname: {label:"Full Name", type:"text"},
             password:{label:"Password", type:"password"}
         },
@@ -33,15 +33,19 @@ const authOptions: NextAuthOptions = {
     })
    ],
    callbacks:{
-    jwt({token, account, profile, user}){
+    jwt({token, account, profile, user}:any){
         if(account?.provider === "Credentials"){
-            token.email = user.email
+            token.email = user.email;
+            token.fullname = user.fullname;
     }
     return token;
     },
     async session ({ session, token }: any) {
       if("email" in token){
         session.user.email = token.email
+      }
+      if("fullname" in token){
+        session.user.fullname = token.fullname
       }
        return session
     },
